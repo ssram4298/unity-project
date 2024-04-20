@@ -5,9 +5,11 @@ public class GameController : MonoBehaviour
 {
     public EventDisplayManager eventDisplayManager;
     public GameObject pressAnyButtonPrompt;
-    [SerializeField] private PlayerHealth playerHealth;
+    public PlayerHealthController playerHealth;
+    public SmokeController smokeController;
     public GameObject hudCallEvent;
     public AudioSource audioSource; // Assign this in the Unity inspector
+    public AudioSource audioSource2;
 
     private bool isWaitingForInput = true; // Waiting for any input, not just displaying game name
     private bool gameStarted = false; // Flag to ensure the game start logic only runs once
@@ -30,9 +32,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerHealth.currentHealth = playerHealth.maxHealth;
-        playerHealth.InitializeHealthGradient();
-        playerHealth.UpdateHealthUI();
+        smokeController.StopAllSmoke();
+        smokeController.ClearAllSmoke();
         eventDisplayManager.DisplayGameName(gameName);  // Display the game name at the start
         pressAnyButtonPrompt.SetActive(true);        // Display the 'Press any button to continue' prompt
         hudCallEvent.SetActive(false);
@@ -54,8 +55,8 @@ public class GameController : MonoBehaviour
 
     private IEnumerator WaitAndStartFirstMission()
     {
-        // Wait for 10 seconds
-        yield return new WaitForSeconds(5f);
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(2f);
         StartGame();
     }
 
@@ -93,16 +94,17 @@ public class GameController : MonoBehaviour
             Debug.Log("Started playing audio!");
             hudCallEvent.SetActive(true);
             audioSource.Play();
-            StartCoroutine(WaitForAudioToEnd());
+            audioSource2.Play();
+            StartCoroutine(WaitForAudioToEnd()); 
         }
     }
     private IEnumerator WaitForAudioToEnd()
     {
         yield return new WaitForSeconds(audioSource.clip.length);
         hudCallEvent.SetActive(false);
+        smokeController.StartAllSmoke();
+        playerHealth.StartDecreasing();
         StartMission();
-        playerHealth.start1();
-
     }
 
     // Call this when a mission is completed

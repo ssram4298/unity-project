@@ -29,4 +29,14 @@ public class SmokeController : MonoBehaviour
             }
         }
     }
+    public void ClearAllSmoke()
+    {
+        foreach (var smoke in smokeSystems)
+        {
+            if (smoke != null && smoke.isPlaying)
+            {
+                smoke.Clear();
+            }
+        }
+    }
 }

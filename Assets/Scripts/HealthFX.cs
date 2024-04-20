@@ -6,7 +6,7 @@ public class HealthFX : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+            PlayerHealthController playerHealth = other.GetComponent<PlayerHealthController>();
             if (playerHealth != null)
             {
                 playerHealth.RestoreHealth();

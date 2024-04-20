@@ -8,7 +8,7 @@ public class Keypad : MonoBehaviour
     [SerializeField] private Animator Door;
     [SerializeField] private Animator Door2;
     [SerializeField] private MissionController missionController;
-    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerHealthController playerHealth;
     [SerializeField] private SmokeController smokeController;
     [SerializeField] private GameObject imageToHide;  // Reference to the Image component to hide
     [SerializeField] private GameObject gameComponentToShow;  // Reference to the game component to show and hide
