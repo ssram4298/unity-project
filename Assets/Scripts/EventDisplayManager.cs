@@ -11,7 +11,7 @@ public class EventDisplayManager : MonoBehaviour
     private void Start()
     {
         // Initially hide the entire HUD
-        hudEventMissionStart.SetActive(false);
+       // hudEventMissionStart.SetActive(false);
     }
 
     public void DisplayGameName(string gameName)
@@ -19,13 +19,16 @@ public class EventDisplayManager : MonoBehaviour
         hudEventMissionStart.SetActive(true); // Show the HUD
         missionCompleteText.text = "WELCOME TO"; // Header text
         missionNameText.text = gameName; // Display the game name
+        Debug.Log("Hello");
 
         // Optionally hide the HUD after some time (commented out if persistent display is needed)
-        Invoke("HideHUD", displayTime);
+       // Invoke("HideHUD", displayTime);
+      //  hideGameName();
     }
 
     public void DisplayStartMission(string missionName, string missionInfo)
     {
+        Debug.Log("Hello11");
         hudEventMissionStart.SetActive(true); // Show the HUD again
         missionNameText.text = missionInfo; // Display the mission information
         missionCompleteText.text = missionName; // Display the mission name
@@ -44,7 +47,7 @@ public class EventDisplayManager : MonoBehaviour
         Invoke("HideHUD", displayTime);
     }
 
-    private void HideHUD()
+   private void HideHUD()
     {
         // Hide the entire HUD
         hudEventMissionStart.SetActive(false);

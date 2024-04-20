@@ -5,6 +5,7 @@ public class GameController : MonoBehaviour
 {
     public EventDisplayManager eventDisplayManager;
     public GameObject pressAnyButtonPrompt;
+    [SerializeField] private PlayerHealth playerHealth;
     public GameObject hudCallEvent;
     public AudioSource audioSource; // Assign this in the Unity inspector
 
@@ -29,6 +30,9 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerHealth.currentHealth = playerHealth.maxHealth;
+        playerHealth.InitializeHealthGradient();
+        playerHealth.UpdateHealthUI();
         eventDisplayManager.DisplayGameName(gameName);  // Display the game name at the start
         pressAnyButtonPrompt.SetActive(true);        // Display the 'Press any button to continue' prompt
         hudCallEvent.SetActive(false);
@@ -40,6 +44,7 @@ public class GameController : MonoBehaviour
         if (!gameStarted && isWaitingForInput && Input.anyKeyDown)
         {
             Debug.Log("User Pressed A Button");
+            eventDisplayManager.Invoke("HideHUD", 0f);
             gameStarted = true;
             isWaitingForInput = false; // Stop checking for input
             pressAnyButtonPrompt.SetActive(false); // Hide the prompt
@@ -50,7 +55,7 @@ public class GameController : MonoBehaviour
     private IEnumerator WaitAndStartFirstMission()
     {
         // Wait for 10 seconds
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
         StartGame();
     }
 
@@ -96,6 +101,8 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(audioSource.clip.length);
         hudCallEvent.SetActive(false);
         StartMission();
+        playerHealth.start1();
+
     }
 
     // Call this when a mission is completed

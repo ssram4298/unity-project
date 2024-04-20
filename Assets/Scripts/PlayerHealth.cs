@@ -6,7 +6,7 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
-    private int currentHealth;
+    public int currentHealth;
     public Image healthBarFill;
     public TextMeshProUGUI healthText;
     public CameraShake cameraShake; // Reference to the CameraShake script
@@ -14,17 +14,17 @@ public class PlayerHealth : MonoBehaviour
     private Gradient healthGradient;
     private Coroutine healthCoroutine; // Reference to the ongoing coroutine
 
-    void Start()
+    public void start1()
     {
-        currentHealth = maxHealth;
-        InitializeHealthGradient();
-        UpdateHealthUI();
+       // currentHealth = maxHealth;
+       // InitializeHealthGradient();
+        //UpdateHealthUI();
         if (cameraShake == null)
         {
             cameraShake = Camera.main.GetComponent<CameraShake>();
         }
         // Start decreasing health after a 15 second delay
-        healthCoroutine = StartCoroutine(DecreaseHealthOverTime(15f));
+        healthCoroutine = StartCoroutine(DecreaseHealthOverTime(4f));
     }
 
     IEnumerator DecreaseHealthOverTime(float initialDelay)
@@ -65,7 +65,7 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthUI();
     }
 
-    void UpdateHealthUI()
+     public  void UpdateHealthUI()
     {
         float healthPercent = (float)currentHealth / maxHealth;
         healthBarFill.fillAmount = healthPercent;
@@ -80,7 +80,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void InitializeHealthGradient()
+   public void InitializeHealthGradient()
     {
         healthGradient = new Gradient
         {
