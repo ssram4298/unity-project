@@ -7,6 +7,8 @@ public class GameController : MonoBehaviour
     public GameObject pressAnyButtonPrompt;
     public PlayerHealthController playerHealth;
     public SmokeController smokeController;
+    public CheckpointManager checkpointManager;                                                                   
+
     public GameObject HudCallEvent;
     public GameObject KeyPadTrigger;
     public AudioSource audioSource; // Assign this in the Unity inspector
@@ -24,11 +26,6 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Mission names count: " + missionNames.Length);
-        foreach (var name in missionNames)
-        {
-            Debug.Log("Mission name: " + name);
-        }
         smokeController.StopAllSmoke();
         smokeController.ClearAllSmoke();
         eventDisplayManager.DisplayGameName(gameName);  // Display the game name at the start
@@ -109,21 +106,31 @@ public class GameController : MonoBehaviour
         smokeController.StartAllSmoke();
         playerHealth.StartDecreasing();
         KeyPadTrigger.SetActive(true);
-        //currentMissionIndex--;
         Debug.Log("Mission 1 called Start Mission!");
         StartMission();
     }
+
     public void Mission2()
     {
         Debug.Log("Mission 2 Started!");
-        Debug.Log("Mission 2 called Start Mission!");
-        currentMissionIndex = 2;
+
+        currentMissionIndex = 2; // Remove this after development or dont it doesnt matter
+        StartMission();
+        checkpointManager.ActivateMission2Checkpoint();
+    }
+
+    public void Mission3()
+    {
+        Debug.Log("Mission 3 Started!");
+
+        currentMissionIndex = 3; // Remove this after development or dont it doesnt matter
         StartMission();
     }
 
     // Call this when a mission is completed
     public void CompleteMission()
     {
+        Debug.Log("Complete Mission Called for Mission " + (currentMissionIndex-1));
         eventDisplayManager.DisplayEndMission(missionDescriptions[currentMissionIndex-1]); // Make sure this function exists in your EventDisplayManager
         
         // Optionally, start the next mission or handle the end of the game

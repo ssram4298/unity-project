@@ -11,7 +11,7 @@ public class Keypad : MonoBehaviour
     [SerializeField] private PlayerHealthController playerHealth;
     [SerializeField] private SmokeController smokeController;
     [SerializeField] private GameObject healthFX;
-    [SerializeField] private GameObject wallToDeactivate;
+    //[SerializeField] private GameObject wallToDeactivate;
 
     private readonly string Answer = "458";
     private bool isDoorOpened = false;
@@ -39,7 +39,7 @@ public class Keypad : MonoBehaviour
                 playerHealth.StopHealthDepletion();
                 gameController.CompleteMission();
 
-                StartCoroutine(WaitAndStartNextMission(10f)); // Wait for 10 seconds then start next mission
+                StartCoroutine(WaitAndStartNextMission(5f)); // Wait for 10 seconds then start next mission
             }
             else
             {
@@ -62,7 +62,7 @@ public class Keypad : MonoBehaviour
         Debug.Log("Delay Started!");
         yield return new WaitForSeconds(delay);
         Debug.Log("Keypad Called Mission2!");
-        wallToDeactivate.SetActive(false);
+        //wallToDeactivate.SetActive(false);
         gameController.Mission2(); // Make sure this method is implemented in GameController
     }
 }
