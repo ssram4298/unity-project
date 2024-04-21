@@ -7,13 +7,12 @@ public class Keypad : MonoBehaviour
     [SerializeField] private TextMeshProUGUI Ans;
     [SerializeField] private Animator Door;
     [SerializeField] private Animator Door2;
-    [SerializeField] private MissionController missionController;
+    [SerializeField] private GameController gameController;
     [SerializeField] private PlayerHealthController playerHealth;
     [SerializeField] private SmokeController smokeController;
-    [SerializeField] private GameObject imageToHide;  // Reference to the Image component to hide
-    [SerializeField] private GameObject gameComponentToShow;  // Reference to the game component to show and hide
+    [SerializeField] private GameObject healthFX;
 
-    private string Answer = "111222";
+    private readonly string Answer = "458";
     private bool isDoorOpened = false;
 
     public void Number(int number)
@@ -34,11 +33,12 @@ public class Keypad : MonoBehaviour
                 Door.SetBool("Open", true);
                 Door2.SetBool("Open", true);
                 smokeController.StopAllSmoke();
+                healthFX.SetActive(true);
                 isDoorOpened = true;
-                missionController.CompleteMission();
                 playerHealth.StopHealthDepletion();
-                StartCoroutine(HideImageAfterDelay(2f));  // Start coroutine to hide the image
-                StartCoroutine(ShowGameComponentAfterDelay(1f));  // Show the game component after 1 second
+                gameController.CompleteMission();
+
+                StartCoroutine(WaitAndStartNextMission(10f)); // Wait for 10 seconds then start next mission
             }
             else
             {
@@ -56,32 +56,11 @@ public class Keypad : MonoBehaviour
             Ans.text = "";
         }
     }
-
-    IEnumerator HideImageAfterDelay(float delay)
+    IEnumerator WaitAndStartNextMission(float delay)
     {
+        Debug.Log("Delay Started!");
         yield return new WaitForSeconds(delay);
-        if (imageToHide != null)
-        {
-            imageToHide.SetActive(false);
-        }
-    }
-
-    IEnumerator ShowGameComponentAfterDelay(float delayToShow)
-    {
-        yield return new WaitForSeconds(delayToShow);
-        if (gameComponentToShow != null)
-        {
-            gameComponentToShow.SetActive(true);
-            StartCoroutine(HideGameComponentAfterDelay(5f));  // Hide the game component after 5 seconds
-        }
-    }
-
-    IEnumerator HideGameComponentAfterDelay(float delayToHide)
-    {
-        yield return new WaitForSeconds(delayToHide);
-        if (gameComponentToShow != null)
-        {
-            gameComponentToShow.SetActive(false);
-        }
+        Debug.Log("Keypad Called Mission2!");
+        gameController.Mission2(); // Make sure this method is implemented in GameController
     }
 }

@@ -7,78 +7,71 @@ public class GameController : MonoBehaviour
     public GameObject pressAnyButtonPrompt;
     public PlayerHealthController playerHealth;
     public SmokeController smokeController;
-    public GameObject hudCallEvent;
+    public GameObject HudCallEvent;
+    public GameObject KeyPadTrigger;
     public AudioSource audioSource; // Assign this in the Unity inspector
     public AudioSource audioSource2;
 
     private bool isWaitingForInput = true; // Waiting for any input, not just displaying game name
     private bool gameStarted = false; // Flag to ensure the game start logic only runs once
 
-    public string gameName = "Your Game Name";
+    private string gameName = "Cyberpunk!";
     private int currentMissionIndex = 0;
 
-    public string[] missionNames = {
-        "Prelude",
-        "Mission 1",
-        // Add more mission names here
-    };
-
-    public string[] missionDescriptions = {
-        "The Call.",
-        "Escape the Room.",
-        // Add more mission descriptions here
-    };
+    private string[] missionNames = { "Prelude", "Mission 1", "Mission 2", "Mission 3" };
+    private string[] missionDescriptions = { "The Call.", "Escape the Room.", "The Training Arc.", "The Revenge." };
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Mission names count: " + missionNames.Length);
+        foreach (var name in missionNames)
+        {
+            Debug.Log("Mission name: " + name);
+        }
         smokeController.StopAllSmoke();
         smokeController.ClearAllSmoke();
         eventDisplayManager.DisplayGameName(gameName);  // Display the game name at the start
         pressAnyButtonPrompt.SetActive(true);        // Display the 'Press any button to continue' prompt
-        hudCallEvent.SetActive(false);
     }
 
     void Update()
     {
         // Check for any input if we are waiting for player input
-        if (!gameStarted && isWaitingForInput && Input.anyKeyDown)
+        if (!gameStarted && isWaitingForInput && Input.GetButtonDown("Fire1"))
         {
             Debug.Log("User Pressed A Button");
             eventDisplayManager.Invoke("HideHUD", 0f);
             gameStarted = true;
             isWaitingForInput = false; // Stop checking for input
             pressAnyButtonPrompt.SetActive(false); // Hide the prompt
-            StartCoroutine(WaitAndStartFirstMission()); // Start the coroutine to wait for 10 seconds
+            StartCoroutine(Wait(2f, StartGame)); // Wait for 2 seconds then start the game
         }
     }
-
-    private IEnumerator WaitAndStartFirstMission()
+    IEnumerator Wait(float delay, System.Action callback)
     {
-        // Wait for 2 seconds
-        yield return new WaitForSeconds(2f);
-        StartGame();
+        yield return new WaitForSeconds(delay);
+        callback?.Invoke();
     }
 
     private void StartGame()
     {
-        // Start the first mission
         Debug.Log("Game Started!");
-        Prelude();
+        //Prelude();// Start the first mission
+        Mission2();
     }
 
     public void StartMission()
     {
+        Debug.Log("Start Mission Called! "+missionNames.Length);
         if (currentMissionIndex < missionNames.Length)
         {
-            Debug.Log("Displayed mission");
-
             string missionName = missionNames[currentMissionIndex];
             string missionDescription = missionDescriptions[currentMissionIndex];
             eventDisplayManager.DisplayStartMission(missionName, missionDescription);
             currentMissionIndex++; // Increment the mission index
-
-            Debug.Log(currentMissionIndex);
+            
+            Debug.Log("CurrentMissionIndex = "+currentMissionIndex);
         }
         else
         {
@@ -88,29 +81,50 @@ public class GameController : MonoBehaviour
 
     public void Prelude()
     {
+        Debug.Log("Prelude Started!");
         StartMission();
         if (audioSource.clip != null)
         {
-            Debug.Log("Started playing audio!");
-            hudCallEvent.SetActive(true);
+            HudCallEvent.SetActive(true);
             audioSource.Play();
             audioSource2.Play();
-            StartCoroutine(WaitForAudioToEnd()); 
+
+            /*StartCoroutine(Wait(audioSource.clip.length, () =>
+            {
+                HudCallEvent.SetActive(false);
+                smokeController.StartAllSmoke();
+                playerHealth.StartDecreasing();
+                KeyPadTrigger.SetActive(true);
+                StartMission();
+            })); */
+            StartCoroutine(Wait(audioSource.clip.length, Mission1));
         }
     }
-    private IEnumerator WaitForAudioToEnd()
+
+    public void Mission1()
     {
-        yield return new WaitForSeconds(audioSource.clip.length);
-        hudCallEvent.SetActive(false);
+        Debug.Log("Mission 1 Started!");
+
+        HudCallEvent.SetActive(false);
         smokeController.StartAllSmoke();
         playerHealth.StartDecreasing();
+        KeyPadTrigger.SetActive(true);
+        //currentMissionIndex--;
+        Debug.Log("Mission 1 called Start Mission!");
+        StartMission();
+    }
+    public void Mission2()
+    {
+        Debug.Log("Mission 2 Started!");
+        Debug.Log("Mission 2 called Start Mission!");
+        currentMissionIndex = 2;
         StartMission();
     }
 
     // Call this when a mission is completed
     public void CompleteMission()
     {
-        eventDisplayManager.DisplayEndMission(missionNames[currentMissionIndex-1]); // Make sure this function exists in your EventDisplayManager
+        eventDisplayManager.DisplayEndMission(missionDescriptions[currentMissionIndex-1]); // Make sure this function exists in your EventDisplayManager
         
         // Optionally, start the next mission or handle the end of the game
     }
