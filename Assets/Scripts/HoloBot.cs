@@ -8,11 +8,9 @@ public class HoloBot : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        holoRespawnScript.counter++;
-        Debug.Log(holoRespawnScript.counter);
-
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            holoRespawnScript.IncrementCounter();
             gameObject.SetActive(false);
         }
     }

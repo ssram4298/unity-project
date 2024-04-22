@@ -3,7 +3,7 @@ using TMPro;
 
 public class CheckpointManager : MonoBehaviour
 {
-    public HoloRespawnScript holeRespawnScript;
+    public HoloRespawnScript holoRespawnScript;
     public GameObject hudNotificationArea;
     public TextMeshProUGUI notificationPrompt;
     public GameObject[] Mission2Checkpoints; // Array of checkpoint GameObjects
@@ -58,7 +58,35 @@ public class CheckpointManager : MonoBehaviour
 
         hudNotificationArea.SetActive(true);
         notificationPrompt.text = "Kill 10 Bots!!";
-        holeRespawnScript.StartSpawningBots(); // Call to Respawn Bots
+        holoRespawnScript.StartSpawningBots(); // Call to Respawn Bots
+    }
+
+    public void ActivateMission3Checkpoint()
+    {
+        foreach (GameObject checkpoint in Mission3Checkpoints)
+        {
+            checkpoint.SetActive(true);
+        }
+        foreach (GameObject direction in Mission3Directions)
+        {
+            direction.SetActive(true);
+        }
+    }
+    public void ReachMission3Checkpoint()
+    {
+        // Deactivate all Mission2 Checkpoints 
+        foreach (GameObject checkpoint in Mission3Checkpoints)
+        {
+            checkpoint.SetActive(false);
+        }
+        foreach (GameObject direction in Mission3Directions)
+        {
+            direction.SetActive(false);
+        }
+
+        hudNotificationArea.SetActive(true);
+        notificationPrompt.text = "Kill 2 Enemies!!";
+        //function to start mission 3
     }
 
     /*public void ReachCheckpoint(int index)

@@ -39,7 +39,7 @@ public class Keypad : MonoBehaviour
                 playerHealth.StopHealthDepletion();
                 gameController.CompleteMission();
 
-                StartCoroutine(WaitAndStartNextMission(5f)); // Wait for 10 seconds then start next mission
+                StartCoroutine(WaitAndStartNextMission(15f)); // Wait for 15 seconds then start next mission
             }
             else
             {
