@@ -125,6 +125,7 @@ public class GameController : MonoBehaviour
 
         currentMissionIndex = 3; // Remove this after development or dont it doesnt matter
         StartMission();
+        checkpointManager.ActivateMission3Checkpoint();
     }
 
     // Call this when a mission is completed
