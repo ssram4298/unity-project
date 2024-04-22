@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     public CheckpointManager checkpointManager;                                                                   
 
     public GameObject HudCallEvent;
-    public GameObject KeyPadTrigger;
+    public GameObject KeyPad;
     public AudioSource audioSource; // Assign this in the Unity inspector
     public AudioSource audioSource2;
 
@@ -20,8 +20,8 @@ public class GameController : MonoBehaviour
     private string gameName = "Cyberpunk!";
     private int currentMissionIndex = 0;
 
-    private string[] missionNames = { "Prelude", "Mission 1", "Mission 2", "Mission 3" };
-    private string[] missionDescriptions = { "The Call.", "Escape the Room.", "The Training Arc.", "The Revenge." };
+    private string[] missionNames = { "Prelude", "Mission 1", "Mission 2", "Mission 3", "Mission 4" };
+    private string[] missionDescriptions = { "The Call.", "Escape the Room.", "The Training Arc.", "The Revenge Begins!", "The Final Battle!!" };
 
     // Start is called before the first frame update
     void Start()
@@ -105,13 +105,14 @@ public class GameController : MonoBehaviour
         HudCallEvent.SetActive(false);
         smokeController.StartAllSmoke();
         playerHealth.StartDecreasing();
-        KeyPadTrigger.SetActive(true);
+        KeyPad.SetActive(true);
         Debug.Log("Mission 1 called Start Mission!");
         StartMission();
     }
 
     public void Mission2()
     {
+        KeyPad.SetActive(false);
         Debug.Log("Mission 2 Started!");
 
         currentMissionIndex = 2; // Remove this after development or dont it doesnt matter

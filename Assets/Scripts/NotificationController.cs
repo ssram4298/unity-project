@@ -28,10 +28,14 @@ public class NotificationController : MonoBehaviour
         notificationPrompt.text = message;
     }
 
-    public void setNotificaitonSlider(int maxValue, int value)
+    public void SetNotificaitonSlider(int maxValue, int value)
     {
         notificationSlider.maxValue = maxValue;
         notificationSlider.value = value;
-        notificationLabel.text = value + "/" + maxValue;
+    }
+
+    public void UpdateSliderText(string message)
+    {
+        notificationLabel.text = message;
     }
 }

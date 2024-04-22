@@ -5,13 +5,11 @@ using System.Collections;
 public class Keypad : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI Ans;
-    [SerializeField] private Animator Door;
-    [SerializeField] private Animator Door2;
+    [SerializeField] private Animator Door, Door2;
     [SerializeField] private GameController gameController;
     [SerializeField] private PlayerHealthController playerHealth;
     [SerializeField] private SmokeController smokeController;
     [SerializeField] private GameObject healthFX;
-    //[SerializeField] private GameObject wallToDeactivate;
 
     private readonly string Answer = "458";
     private bool isDoorOpened = false;
@@ -37,9 +35,15 @@ public class Keypad : MonoBehaviour
                 healthFX.SetActive(true);
                 isDoorOpened = true;
                 playerHealth.StopHealthDepletion();
+                
                 gameController.CompleteMission();
+                
 
-                StartCoroutine(WaitAndStartNextMission(15f)); // Wait for 15 seconds then start next mission
+                StartCoroutine(WaitAndStartNextMission(5f)); // Wait for 10 seconds then start next mission
+
+                Debug.Log("UNITY VR GMAEHJDSLKFJ");
+                //gameController.Mission2(); // Make sure this method is implemented in GameController
+
             }
             else
             {
@@ -61,6 +65,7 @@ public class Keypad : MonoBehaviour
     {
         Debug.Log("Delay Started!");
         yield return new WaitForSeconds(delay);
+
         Debug.Log("Keypad Called Mission2!");
         //wallToDeactivate.SetActive(false);
         gameController.Mission2(); // Make sure this method is implemented in GameController

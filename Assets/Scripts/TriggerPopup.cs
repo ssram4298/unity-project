@@ -12,11 +12,11 @@ public class TriggerPopup : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    /*private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             popupCanvas.SetActive(false);
         }
-    }
+    }*/
 }

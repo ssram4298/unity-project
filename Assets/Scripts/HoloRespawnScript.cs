@@ -7,12 +7,13 @@ using TMPro;
 public class HoloRespawnScript : MonoBehaviour
 {
     public GameController gameController;
+    public NotificationController notificationController;
     public GameObject wallToRemove;
 
     public List<GameObject> allObjects; // List to store all objects that can be activated/deactivated
 
-    public Slider botCountSlider;
-    public TextMeshProUGUI botCountLabel;
+    //public Slider botCountSlider;
+    //public TextMeshProUGUI botCountLabel;
     public int botsToDefeat = 10;
 
 
@@ -22,12 +23,14 @@ public class HoloRespawnScript : MonoBehaviour
 
     public void StartSpawningBots()
     {
-        if(botCountSlider != null)
+        /*if(botCountSlider != null)
         {
             botCountSlider.maxValue = botsToDefeat;
             botCountSlider.value = counter;
-            botCountLabel.text = counter + "/" + botsToDefeat;
-        }
+            botCountLabel.text = counter + "/" + botsToDefeat; 
+        }*/
+        notificationController.SetNotificaitonSlider(botsToDefeat, counter);
+        notificationController.UpdateSliderText(counter + "/" + botsToDefeat);
         // Start the periodic activation and deactivation routine
         StartCoroutine(SequentialActivationRoutine());
     }
@@ -35,8 +38,10 @@ public class HoloRespawnScript : MonoBehaviour
     public void IncrementCounter()
     {
         counter++;
-        botCountSlider.value = counter;
-        botCountLabel.text = counter + "/" + botsToDefeat;
+        //botCountSlider.value = counter;
+        //botCountLabel.text = counter + "/" + botsToDefeat;
+        notificationController.SetNotificaitonSlider(botsToDefeat, counter);
+        notificationController.UpdateSliderText(counter + "/" + botsToDefeat);
     }
 
     IEnumerator SequentialActivationRoutine()
@@ -50,7 +55,9 @@ public class HoloRespawnScript : MonoBehaviour
                 {
                     // call missioncomplete
                     gameController.CompleteMission();
-                    yield return new WaitForSeconds(10f);
+                    notificationController.DeactivateNotificationArea();
+                    notificationController.UpdateSliderText("");
+                    yield return new WaitForSeconds(5f);
                     wallToRemove.SetActive(false);
                     gameController.Mission3();
                     break;

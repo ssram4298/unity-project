@@ -4,8 +4,9 @@ using TMPro;
 public class CheckpointManager : MonoBehaviour
 {
     public HoloRespawnScript holoRespawnScript;
-    public GameObject hudNotificationArea;
-    public TextMeshProUGUI notificationPrompt;
+    public NotificationController notificationController;
+    //public GameObject hudNotificationArea;
+    //public TextMeshProUGUI notificationPrompt;
     public GameObject[] Mission2Checkpoints; // Array of checkpoint GameObjects
     public GameObject[] Mission2Directions;  // Array of directional FX GameObjects
     public GameObject[] Mission3Checkpoints; // Array of checkpoint GameObjects
@@ -42,6 +43,7 @@ public class CheckpointManager : MonoBehaviour
         {
             direction.SetActive(true);
         }
+        notificationController.UpdateSliderText("Reach the Next Checkpoint!");
     }
 
     public void ReachMission2Checkpoint()
@@ -56,8 +58,9 @@ public class CheckpointManager : MonoBehaviour
             direction.SetActive(false);
         }
 
-        hudNotificationArea.SetActive(true);
-        notificationPrompt.text = "Kill 10 Bots!!";
+        //hudNotificationArea.SetActive(true);
+        //notificationPrompt.text = "Kill 10 Bots!!";
+        notificationController.ActivateNotificationArea("Kill 10 Bots using a Gun!");
         holoRespawnScript.StartSpawningBots(); // Call to Respawn Bots
     }
 
@@ -71,6 +74,7 @@ public class CheckpointManager : MonoBehaviour
         {
             direction.SetActive(true);
         }
+        notificationController.UpdateSliderText("Reach the Next Checkpoint!");
     }
     public void ReachMission3Checkpoint()
     {
@@ -84,8 +88,9 @@ public class CheckpointManager : MonoBehaviour
             direction.SetActive(false);
         }
 
-        hudNotificationArea.SetActive(true);
-        notificationPrompt.text = "Kill 2 Enemies!!";
+        //hudNotificationArea.SetActive(true);
+        //notificationPrompt.text = "Kill 2 Enemies!!";
+        notificationController.ActivateNotificationArea("Kill 3 Enemies!");
         //function to start mission 3
     }
 
