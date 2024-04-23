@@ -9,6 +9,7 @@ public class GunScript : MonoBehaviour
     public GameObject bulletPrefab;  // Drag your bullet prefab here in the Inspector
     public Transform bulletSpawn;    // Assign a child GameObject as the spawn point
     public GameObject crosshair;     // Assign the crosshair UI GameObject in the Inspector
+    public GameObject bulletFx;
     public float shootingForce = 1500f;
     public float bulletLifeTime = 3f;
     public float fireRate = 0.5f;    // Time between shots, in seconds
@@ -65,6 +66,7 @@ public class GunScript : MonoBehaviour
     void Shoot()
     {
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+        Instantiate(bulletFx, bulletSpawn.position, bulletSpawn.rotation);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.AddForce(bulletSpawn.forward * shootingForce);
         Destroy(bullet, bulletLifeTime); // Destroy bullet after a set time to clean up

@@ -54,8 +54,8 @@ public class GameController : MonoBehaviour
     private void StartGame()
     {
         Debug.Log("Game Started!");
-        //Prelude();// Start the first mission
-        Mission2();
+        Prelude();// Start the first mission
+        //Mission2();
     }
 
     public void StartMission()
