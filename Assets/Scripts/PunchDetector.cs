@@ -30,25 +30,19 @@ public class PunchDetector : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Bot"))
         {
             Debug.Log("%^(*^*^)*^%*^(&)$&%*^(&^%^^&)*^&^&)((^%^(*&Collision Detected");
             Vector3 velocity = (currentLeftPosition - previousLeftPosition) / Time.deltaTime;
             if (velocity.magnitude > punchThreshold || ((currentRightPosition - previousRightPosition) / Time.deltaTime).magnitude > punchThreshold)
             {
-                Animator enemyAnimator = collision.gameObject.GetComponent<Animator>();
-                if (enemyAnimator != null)
+                var enemyBot = collision.gameObject.GetComponent<EnemyBot>();
+                if (enemyBot != null)
                 {
-                    enemyAnimator.Play("Death"); // Assuming 'Die' is the name of the trigger set up in the Animator
-                    StartCoroutine(DisableAfterAnimation(enemyAnimator, collision.gameObject));
+                    enemyBot.TakeDamage(100);
                 }
             }
         }
-    }
-    IEnumerator DisableAfterAnimation(Animator animator, GameObject enemy)
-    {
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);  // Wait for the length of the current animation
-        enemy.SetActive(false);
     }
 }
 
