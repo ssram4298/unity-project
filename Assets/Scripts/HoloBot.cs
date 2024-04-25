@@ -14,4 +14,10 @@ public class HoloBot : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    public void IncrementCounter()
+    {
+        holoRespawnScript.IncrementCounter();
+        gameObject.SetActive(false);
+    }
 }
