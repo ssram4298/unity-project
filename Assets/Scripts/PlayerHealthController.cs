@@ -49,6 +49,7 @@ public class PlayerHealthController: MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log("Player took " + damage + " Damage!!");
         currentHealth -= damage;
         UpdateHealthUI();
 

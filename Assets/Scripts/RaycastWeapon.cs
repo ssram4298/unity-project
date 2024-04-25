@@ -92,12 +92,23 @@ public class RaycastWeaponController : XRGrabInteractable
     private void HandleHit()
     {
         // Implement hit handling logic here
-        if (hitInfo.collider.CompareTag("Enemy"))
+        if (hitInfo.collider.CompareTag("Bot"))
         {
             // Instantiate special effects for hitting an enemy
             Instantiate(enemyHitEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
 
             // Attempt to get the BotHealth component and call TakeDamage
+            var enemyHealth = hitInfo.collider.GetComponent<EnemyBot>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(5);
+            }
+        }
+        else if (hitInfo.collider.CompareTag("Enemy"))
+        {
+            // Instantiate special effects for hitting a hologram
+            Instantiate(enemyHitEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+            // Set the hologram object inactive
             var enemyHealth = hitInfo.collider.GetComponent<BotHealth>();
             if (enemyHealth != null)
             {

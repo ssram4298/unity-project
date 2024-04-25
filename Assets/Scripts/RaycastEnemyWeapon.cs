@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Animations.Rigging;
 
 public class RaycastEnemyWeapon : XRGrabInteractable
 {
@@ -9,6 +10,7 @@ public class RaycastEnemyWeapon : XRGrabInteractable
 
     public Transform rayCastOrigin;
     public Transform playerTarget;  // Target the player's transform
+    public Rig enemyRig;
     public float range = 100f;
     public float fireRate = 2.0f;  // Time between shots
 
@@ -26,6 +28,10 @@ public class RaycastEnemyWeapon : XRGrabInteractable
             StartFiring();
             nextFireTime = Time.time + fireRate + Random.Range(0.0f, 2.0f);  // Randomize firing rate
         }
+        else
+        {
+            StopFiring();
+        }
     }
 
     public void StartFiring()
@@ -33,6 +39,7 @@ public class RaycastEnemyWeapon : XRGrabInteractable
         if (!isFiring)
         {
             isFiring = true;
+            enemyRig.weight = 1f;
             foreach (var particle in muzzleFlash)
             {
                 particle.Emit(1);
@@ -44,6 +51,7 @@ public class RaycastEnemyWeapon : XRGrabInteractable
     public void StopFiring()
     {
         isFiring = false;
+        enemyRig.weight = 0f;
     }
 
     private void PerformRaycast()
@@ -56,7 +64,7 @@ public class RaycastEnemyWeapon : XRGrabInteractable
 
         if (Physics.Raycast(ray, out hitInfo, range))
         {
-            Debug.Log("Enemy Fired a Gun");
+            Debug.Log("Enemy Fired the Gun");
             Debug.DrawLine(ray.origin, hitInfo.point, Color.blue, 5.0f);
 
             //hitEffect.transform.position = hitInfo.point;
@@ -64,14 +72,6 @@ public class RaycastEnemyWeapon : XRGrabInteractable
             //hitEffect.Emit(1);
 
             tracer.transform.position = hitInfo.point;
-        }
-    }
-    void OnDrawGizmos()
-    {
-        if (isFiring)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(ray.origin, hitInfo.point);
         }
     }
 }
