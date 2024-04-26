@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class EnemyBot : MonoBehaviour
 {
+    public Mission3Manager m3Manager;
+
     public ParticleSystem[] muzzleFlash;
     public TrailRenderer tracerEffect;
     
@@ -68,7 +70,7 @@ public class EnemyBot : MonoBehaviour
 
             // Rotate towards the player
             Vector3 direction = playerTarget.position - transform.position;
-            direction.y = 0; // Keep the bot upright
+            direction.y = 0; 
             transform.rotation = Quaternion.LookRotation(direction);
             enemyRig.weight = 1;
         }
@@ -77,8 +79,10 @@ public class EnemyBot : MonoBehaviour
             StopFiring();
             enemyRig.weight = 0;
             enemyAnimator.SetTrigger("Death");
-
-            Invoke(nameof(Die), 2.5f);
+            if (currentHealth == 0)
+            {
+                Invoke(nameof(Die), 2.5f);
+            }
         }
     }
 
@@ -99,11 +103,13 @@ public class EnemyBot : MonoBehaviour
     public void StopFiring()
     {
         isFiring = false;
+        
     }
 
     private void Die()
     {
         gameObject.SetActive(false);
+        m3Manager.IncrementCounter(); //Increment the counter in Mission3 Manager
     }
 
     private void PerformRaycast()

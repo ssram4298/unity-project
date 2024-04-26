@@ -6,12 +6,14 @@ using System.Linq;
 
 public class RaycastWeaponController : XRGrabInteractable
 {
+    [Header("Effects")]
     public ParticleSystem[] muzzleFlash;
     public ParticleSystem hitEffect;
     public ParticleSystem enemyHitEffect;
     public ParticleSystem hologramHitEffect;
     public TrailRenderer tracerEffect;
 
+    [Header("Raycast Settings")]
     public Transform rayCastOrigin;
     public float range = 100f;
 

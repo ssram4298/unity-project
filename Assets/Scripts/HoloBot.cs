@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class HoloBot : MonoBehaviour
 {
-    public HoloRespawnScript holoRespawnScript;
+    public Mission2Manager m2Manager;
 
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            holoRespawnScript.IncrementCounter();
+            m2Manager.IncrementCounter();
             gameObject.SetActive(false);
         }
     }
 
     public void IncrementCounter()
     {
-        holoRespawnScript.IncrementCounter();
+        m2Manager.IncrementCounter();
         gameObject.SetActive(false);
     }
 }
