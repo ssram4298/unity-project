@@ -104,6 +104,18 @@ public class RaycastWeaponController : XRGrabInteractable
                 enemyHealth.TakeDamage(5);
             }
         }
+        else if (hitInfo.collider.CompareTag("AdvancedBot"))
+        {
+            // Instantiate special effects for hitting an enemy
+            Instantiate(enemyHitEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+
+            // Attempt to get the BotHealth component and call TakeDamage
+            var enemyHealth = hitInfo.collider.GetComponent<AdvancedEnemyBot>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(5);
+            }
+        }
         else if (hitInfo.collider.CompareTag("Enemy"))
         {
             // Instantiate special effects for hitting a hologram

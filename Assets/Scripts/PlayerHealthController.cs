@@ -12,6 +12,7 @@ public class PlayerHealthController: MonoBehaviour
 
     private Gradient healthGradient;
     private Coroutine healthCoroutine; // Reference to the ongoing coroutine
+    public GameController gameController;
 
     public void Start()
     {
@@ -55,8 +56,10 @@ public class PlayerHealthController: MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            //yield return new WaitForSeconds(2f);
-            QuitGame();
+            Debug.Log("PLayer Health Reached zero");
+            gameController.playerHealthZero();
+            Invoke("QuitGame", 6f);
+            //QuitGame();
         }
     }
 

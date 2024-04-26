@@ -137,4 +137,9 @@ public class GameController : MonoBehaviour
         
         // Optionally, start the next mission or handle the end of the game
     }
+    public void playerHealthZero()
+    {
+        Debug.Log("PLayer Gc");
+        eventDisplayManager.playerDied();
+    }
 }

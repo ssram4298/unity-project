@@ -53,4 +53,16 @@ public class EventDisplayManager : MonoBehaviour
         // Hide the entire HUD
         hudEventMissionStart.SetActive(false);
     }
+    public void playerDied()
+    {
+        Debug.Log("PLayer EM");
+        hudEventMissionStart.SetActive(true); // Show the HUD again
+        missionCompleteText.text = "Health Reached Zero"; // Display the mission name
+        missionNameText.text = "Player Died"; // Display the mission information
+
+
+        // Hide the HUD after the specified display time
+        Invoke("HideHUD", displayTime);
+    }
+
 }

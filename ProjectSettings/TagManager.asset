@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Hologram
   - Bot
+  - AdvancedBot
   layers:
   - Default
   - TransparentFX

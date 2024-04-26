@@ -11,7 +11,7 @@ public class CheckpointManager : MonoBehaviour
     public GameObject[] Mission2Directions;  // Array of directional FX GameObjects
     public GameObject[] Mission3Checkpoints; // Array of checkpoint GameObjects
     public GameObject[] Mission3Directions;  // Array of directional FX GameObjects
-    private int currentCheckpointIndex = 0; // Track the current checkpoint index
+    //private int currentCheckpointIndex = 0; // Track the current checkpoint index
 
     void Start()
     {
@@ -93,6 +93,7 @@ public class CheckpointManager : MonoBehaviour
         notificationController.ActivateNotificationArea("Kill 3 Enemies!");
         //function to start mission 3
     }
+   
 
     /*public void ReachCheckpoint(int index)
     {
