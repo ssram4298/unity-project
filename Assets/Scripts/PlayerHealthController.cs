@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerHealthController: MonoBehaviour
 {
@@ -10,15 +11,28 @@ public class PlayerHealthController: MonoBehaviour
     public Image healthBarFill;
     public TextMeshProUGUI healthText;
 
+    public GameController gameController;
+
+    public PostProcessVolume volume;
+
+    private Vignette vignette;
+
     private Gradient healthGradient;
     private Coroutine healthCoroutine; // Reference to the ongoing coroutine
-    public GameController gameController;
+    
+
+
 
     public void Start()
     {
         currentHealth = maxHealth;
         InitializeHealthGradient();
         UpdateHealthUI();
+
+        if (volume.profile.TryGetSettings(out Vignette vignette))
+        {
+            this.vignette = vignette;
+        }
     }
 
     public void StartDecreasing()
@@ -53,6 +67,8 @@ public class PlayerHealthController: MonoBehaviour
         Debug.Log("Player took " + damage + " Damage!!");
         currentHealth -= damage;
         UpdateHealthUI();
+
+        StartCoroutine(ShowDamageEffect());
 
         if (currentHealth <= 0)
         {
@@ -100,7 +116,25 @@ public class PlayerHealthController: MonoBehaviour
 
     public void RestoreHealth()
     {
-        currentHealth = maxHealth;
+        if(currentHealth <= 70)
+        {
+            currentHealth += 30;
+        }
+        else
+        {
+            currentHealth = maxHealth;
+        }
         UpdateHealthUI();
+    }
+
+    IEnumerator ShowDamageEffect()
+    {
+        // Increase the vignette intensity
+        vignette.intensity.value = 0.5f;  // Adjust the value as needed for visibility
+        vignette.color.value = Color.red;  // Set the vignette color to red
+        yield return new WaitForSeconds(0.5f);  // Duration of the effect
+
+        // Reset the vignette intensity
+        vignette.intensity.value = 0f;
     }
 }

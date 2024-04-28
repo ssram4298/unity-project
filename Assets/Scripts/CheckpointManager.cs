@@ -5,34 +5,22 @@ public class CheckpointManager : MonoBehaviour
 {
     public Mission2Manager m2Manager;
     public Mission3Manager m3Manager;
+    public Mission5Manager m5Manager;
 
     public NotificationController notificationController;
 
-    public GameObject[] Mission2Checkpoints; // Array of checkpoint GameObjects
-    public GameObject[] Mission2Directions;  // Array of directional FX GameObjects
-    public GameObject[] Mission3Checkpoints; // Array of checkpoint GameObjects
-    public GameObject[] Mission3Directions;  // Array of directional FX GameObjects
-    //private int currentCheckpointIndex = 0; // Track the current checkpoint index
+    public GameObject[] Mission2Checkpoints; 
+    public GameObject[] Mission2Directions;  
 
-    void Start()
-    {
-        // Initially deactivate all checkpoints and directions
-        //DeactivateAllCheckpointsAndDirections();
-        // Activate the first checkpoint and direction FX
-        //ActivateCheckpoint(0);
-    }
-
-    /*void DeactivateAllCheckpointsAndDirections()
-    {
-        foreach (GameObject checkpoint in checkpoints)
-        {
-            checkpoint.SetActive(false);
-        }
-        foreach (GameObject direction in directions)
-        {
-            direction.SetActive(false);
-        }
-    }*/
+    public GameObject[] Mission3Checkpoints; 
+    public GameObject[] Mission3Directions;  
+    
+    public GameObject[] Mission4Checkpoints; 
+    public GameObject[] Mission4Directions;
+    
+    public GameObject[] Mission5Checkpoints;
+    public GameObject[] Mission5Directions;
+    //private int currentCheckpointIndex = 0; 
 
     public void ActivateMission2Checkpoint()
     {
@@ -93,7 +81,65 @@ public class CheckpointManager : MonoBehaviour
 
         m3Manager.SetupCounter();
     }
-   
+
+    public void ActivateMission4Checkpoint()
+    {
+        foreach (GameObject checkpoint in Mission4Checkpoints)
+        {
+            checkpoint.SetActive(true);
+        }
+        foreach (GameObject direction in Mission4Directions)
+        {
+            direction.SetActive(true);
+        }
+
+        notificationController.UpdateSliderText("Reach the Next Checkpoint!");
+    }
+
+    public void ReachMission4Checkpoint()
+    {
+        foreach (GameObject checkpoint in Mission4Checkpoints)
+        {
+            checkpoint.SetActive(false);
+        }
+        foreach (GameObject direction in Mission4Directions)
+        {
+            direction.SetActive(false);
+        }
+
+        notificationController.UpdateSliderText("Find the Secret Agent!");
+    }
+
+    public void ActivateMission5Checkpoint()
+    {
+        foreach (GameObject checkpoint in Mission5Checkpoints)
+        {
+            checkpoint.SetActive(true);
+        }
+        foreach (GameObject direction in Mission5Directions)
+        {
+            direction.SetActive(true);
+        }
+
+        notificationController.UpdateSliderText("Reach the Next Checkpoint!");
+    }
+
+    public void ReachMission5Checkpoint()
+    {
+        foreach (GameObject checkpoint in Mission5Checkpoints)
+        {
+            checkpoint.SetActive(false);
+        }
+        foreach (GameObject direction in Mission5Directions)
+        {
+            direction.SetActive(false);
+        }
+
+        notificationController.UpdateSliderText("Defeat the Enemies!");
+
+        //m5Manager.StartMision5
+    }
+
 
     /*public void ReachCheckpoint(int index)
     {

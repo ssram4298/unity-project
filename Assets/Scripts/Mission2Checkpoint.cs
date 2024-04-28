@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CheckpointFX : MonoBehaviour
+public class Mission2Checkpoint: MonoBehaviour
 {
     public CheckpointManager manager; // Reference to the CheckpointManager, set this in the inspector
 

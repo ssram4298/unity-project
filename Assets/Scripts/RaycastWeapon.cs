@@ -118,6 +118,20 @@ public class RaycastWeaponController : XRGrabInteractable
                 enemyHealth.TakeDamage(5);
             }
         }
+        else if (hitInfo.collider.CompareTag("Boss"))
+        {
+            // Instantiate special effects for hitting an enemy
+            hitEffect.transform.position = hitInfo.point;
+            hitEffect.transform.forward = hitInfo.normal;
+            hitEffect.Emit(1);
+
+            // Attempt to get the BotHealth component and call TakeDamage
+            var enemyHealth = hitInfo.collider.GetComponent<BossController>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(100);
+            }
+        }
         else if (hitInfo.collider.CompareTag("Enemy"))
         {
             // Instantiate special effects for hitting a hologram

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class GameController : MonoBehaviour
 {
@@ -7,7 +8,8 @@ public class GameController : MonoBehaviour
     public GameObject pressAnyButtonPrompt;
     public PlayerHealthController playerHealth;
     public SmokeController smokeController;
-    public CheckpointManager checkpointManager;                                                                   
+    public CheckpointManager checkpointManager;
+    public SoundController callController;
 
     public GameObject HudCallEvent;
     public GameObject KeyPad;
@@ -81,23 +83,32 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Prelude Started!");
         StartMission();
-        if (audioSource.clip != null)
+        HudCallEvent.SetActive(true);
+        /*if (audioSource.clip != null)
         {
             HudCallEvent.SetActive(true);
             audioSource.Play();
             audioSource2.Play();
 
-            /*StartCoroutine(Wait(audioSource.clip.length, () =>
+            StartCoroutine(Wait(audioSource.clip.length, () =>
             {
                 HudCallEvent.SetActive(false);
                 smokeController.StartAllSmoke();
                 playerHealth.StartDecreasing();
                 KeyPadTrigger.SetActive(true);
                 StartMission();
-            })); */
+            }));
             StartCoroutine(Wait(audioSource.clip.length, Mission1));
-        }
+        }*/
+        SoundController.Instance.PlayAudioClip(0);
+        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, Mission1));
     }
+    
+    IEnumerator WaitForAudioClipEnd(AudioSource source, Action callback)
+    {
+        yield return new WaitWhile(() => source.isPlaying);
+        callback?.Invoke();
+    } 
 
     public void Mission1()
     {
@@ -128,6 +139,30 @@ public class GameController : MonoBehaviour
         currentMissionIndex = 3; // Remove this after development or dont it doesnt matter
         StartMission();
         checkpointManager.ActivateMission3Checkpoint();
+    }
+
+    public void Mission4()
+    {
+        Debug.Log("Mission 4 Started!");
+
+        HudCallEvent.SetActive(true);
+        SoundController.Instance.PlayAudioClip(0);
+        //wait for audioclip to end and call checkpointmanager.ActivateMission4checkpoint
+        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, () =>
+        {
+            currentMissionIndex = 4; // Remove this after development or dont it doesnt matter
+            StartMission();
+            HudCallEvent.SetActive(false);
+            checkpointManager.ActivateMission4Checkpoint();
+        }));
+    }
+
+    public void Mission5()
+    {
+        Debug.Log("Mission 5 Started");
+
+        checkpointManager.ActivateMission5Checkpoint();
+
     }
 
     // Call this when a mission is completed

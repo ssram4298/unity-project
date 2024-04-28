@@ -7,6 +7,8 @@ public class Mission3Manager : MonoBehaviour
     public GameController gameController;
     public NotificationController notificationController;
 
+    public GameObject[] healthFX;
+
     private int counter = 0;
     private int enemiesToDefeat = 3;
 
@@ -24,7 +26,10 @@ public class Mission3Manager : MonoBehaviour
 
         if (counter >= 3)
         {
+            healthFX[counter].SetActive(true);
+            notificationController.DeactivateNotificationArea();
             gameController.CompleteMission();
+            gameController.Mission4();
         }
     }
 }

@@ -38,10 +38,8 @@ public class Keypad : MonoBehaviour
                 
                 gameController.CompleteMission();
                 
-
                 StartCoroutine(WaitAndStartNextMission(5f)); // Wait for 10 seconds then start next mission
 
-                Debug.Log("UNITY VR GMAEHJDSLKFJ");
                 //gameController.Mission2(); // Make sure this method is implemented in GameController
 
             }

@@ -6,7 +6,7 @@ public class EventDisplayManager : MonoBehaviour
     public GameObject hudEventMissionStart; // The entire HUD GameObject
     public TextMeshProUGUI missionNameText; // Assign your Label_MissionName Text component here in the inspector
     public TextMeshProUGUI missionCompleteText; // Assign your Label_MissionComplete Text component here in the inspector
-    private float displayTime = 4.0f; // Time in seconds to display each message
+    private float displayTime = 3.0f; // Time in seconds to display each message
 
     private void Start()
     {
