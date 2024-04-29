@@ -64,7 +64,7 @@ public class BossController : MonoBehaviour
             if (currentHealth > maxHealth * 0.5f)
             {
                 // Boss is above 50% health
-                PerformRaycastAttack(5); // Damage is 10
+                PerformRaycastAttack(10); // Damage is 10
                 attackTimer = 4f; // Reset timer to 4 seconds
             }
             else
@@ -169,7 +169,7 @@ public class BossController : MonoBehaviour
             if (hitInfo.collider.CompareTag("Player"))
             {
                 Debug.Log("Big attack hit the player!");
-                HandleHit(25); // Big attack damage
+                HandleHit(30); // Big attack damage
             }
             else
             {

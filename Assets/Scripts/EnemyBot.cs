@@ -167,10 +167,6 @@ public class EnemyBot : MonoBehaviour
     {
         if (hitInfo.collider.CompareTag("Player"))
         {
-            // Instantiate special effects for hitting an enemy
-            //Instantiate(enemyHitEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-
-            // Attempt to get the BotHealth component and call TakeDamage
             var enemyHealth = hitInfo.collider.GetComponent<PlayerHealthController>();
             if (enemyHealth != null)
             {

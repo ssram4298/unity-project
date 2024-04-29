@@ -74,6 +74,8 @@ public class AdvancedEnemyBot: MonoBehaviour
     {
         currentHealth -= damage;
 
+        RotateTowardsPlayer();
+
         if (healthBarSlider != null)
         {
             healthBarSlider.value = currentHealth;
@@ -170,14 +172,10 @@ public class AdvancedEnemyBot: MonoBehaviour
     {
         if (hitInfo.collider.CompareTag("Player"))
         {
-            // Instantiate special effects for hitting an enemy
-            //Instantiate(enemyHitEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-
-            // Attempt to get the BotHealth component and call TakeDamage
             var enemyHealth = hitInfo.collider.GetComponent<PlayerHealthController>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(5);
+                enemyHealth.TakeDamage(10);
             }
         }
     }
