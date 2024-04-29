@@ -12,7 +12,7 @@ public class AdvancedRaycastWeapon : XRGrabInteractable
     public ParticleSystem enemyHitEffect;
     public ParticleSystem hologramHitEffect;
     public TrailRenderer tracerEffect;
-    public ParticleSystem bulletTracer;
+    //public ParticleSystem bulletTracer;
 
     [Header("Raycast Settings")]
     public Transform rayCastOrigin;

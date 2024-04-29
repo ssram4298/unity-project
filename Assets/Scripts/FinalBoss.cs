@@ -8,6 +8,8 @@ public class BossController : MonoBehaviour
 {
     public Animator BossAnimator;
 
+    public Mission5Manager m5Manager;
+
     public Transform attackRayCastOrigin;
     public Transform bigAttackRayCastOrigin;
     public Transform playerTarget;
@@ -127,45 +129,65 @@ public class BossController : MonoBehaviour
 
     IEnumerator ChargeAndPerformBigAttack()
     {
+        if (currentHealth <= 0)
+        {
+            yield break; // Exit the coroutine if the boss is already dead
+        }
+
         bigAttackFX.Play();
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3); // The boss charges up the attack for 3 seconds
+
+        // Check health again after charge-up in case the boss died during this time
+        if (currentHealth <= 0)
+        {
+            bigAttackFX.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            yield break; // Exit the coroutine if the boss is dead
+        }
+
         BossAnimator.Play("Attack");
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2); // Wait for the attack animation to play
 
-        ray.origin = attackRayCastOrigin.position;
-        ray.direction = (playerTarget.position - ray.origin).normalized; 
+        // Final health check before performing the attack
+        if (currentHealth <= 0)
+        {
+            yield break; // Exit the coroutine if the boss is dead
+        }
 
-        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity))
+        ray.origin = bigAttackRayCastOrigin.position;
+        ray.direction = (playerTarget.position - ray.origin).normalized;
+
+        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, playerLayer))
         {
             if (hitInfo.collider.CompareTag("Player"))
             {
-                Debug.Log("Hit the player!");
-                HandleHit(25);
+                Debug.Log("Big attack hit the player!");
+                HandleHit(25); // Big attack damage
             }
             else
             {
-                Debug.Log("Hit something else: " + hitInfo.collider.name);
+                Debug.Log("Big attack hit something else: " + hitInfo.collider.name);
             }
         }
         else
         {
-            Debug.Log("Missed the shot");
+            Debug.Log("Big attack missed");
         }
 
-        yield return new WaitForSeconds(2.5f);
-        BossAnimator.Play("Standing Idle");
+        yield return new WaitForSeconds(2.5f); // Wait for post-attack delay
+        BossAnimator.Play("Standing Idle"); // Go back to idle
 
         bigAttackRoutine = null;
     }
 
     public void TakeDamage(float damage)
     {
+
         currentHealth -= damage;
 
-        if(BossHealthSlider != null )
+        if(BossHealthSlider != null)
         {
-            BossHealthSlider.value = currentHealth;
-            HealthLabel.text = currentHealth + "/" + maxHealth + " HP";
+            BossHealthSlider.value = currentHealth >= 0 ? currentHealth : 0;
+            HealthLabel.text = (currentHealth >= 0 ? currentHealth : 0) + "/" + maxHealth + " HP";
         }
 
         if (currentHealth <= 0)
@@ -183,14 +205,14 @@ public class BossController : MonoBehaviour
             bossRig.weight = 0;
             
             BossAnimator.Play("Dying");
-            Invoke(nameof(Die), 4.5f);
+            Invoke(nameof(Die), 4.2f);
         }
     }
 
     void Die()
     {
         Debug.Log("Boss is dead!");
-        
+        m5Manager.EndBossBattle();
         // Handle boss death here, like disabling the boss game object, playing death animations, etc.
         gameObject.SetActive(false);
     }

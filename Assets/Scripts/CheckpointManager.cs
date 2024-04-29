@@ -107,7 +107,7 @@ public class CheckpointManager : MonoBehaviour
             direction.SetActive(false);
         }
 
-        notificationController.UpdateSliderText("Find the Secret Agent!");
+        notificationController.UpdateSliderText("Talk With the Secret Agent!");
     }
 
     public void ActivateMission5Checkpoint()
@@ -137,7 +137,7 @@ public class CheckpointManager : MonoBehaviour
 
         notificationController.UpdateSliderText("Defeat the Enemies!");
 
-        //m5Manager.StartMision5
+        m5Manager.StartMission5();
     }
 
 

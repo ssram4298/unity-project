@@ -40,8 +40,6 @@ public class Keypad : MonoBehaviour
                 
                 StartCoroutine(WaitAndStartNextMission(5f)); // Wait for 10 seconds then start next mission
 
-                //gameController.Mission2(); // Make sure this method is implemented in GameController
-
             }
             else
             {
@@ -65,7 +63,7 @@ public class Keypad : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         Debug.Log("Keypad Called Mission2!");
-        //wallToDeactivate.SetActive(false);
+
         gameController.Mission2(); // Make sure this method is implemented in GameController
     }
 }

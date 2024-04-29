@@ -9,7 +9,7 @@ public class EnemyBot : MonoBehaviour
 
     public ParticleSystem[] muzzleFlash;
     public TrailRenderer tracerEffect;
-    
+
     public Animator enemyAnimator;
     public Rig enemyRig;
     public float maxHealth = 100f;
@@ -42,16 +42,38 @@ public class EnemyBot : MonoBehaviour
     private void Update()
     {
         if (currentHealth <= 0) return;
-        
+
         if (isFiring && Time.time > nextFireTime)
-        { 
+        {
             StartFiring();
+
+            RotateTowardsPlayer();
+        }
+    }
+
+    private void RotateTowardsPlayer()
+    {
+        if (playerTarget != null)
+        {
+            Vector3 direction = playerTarget.position - transform.position;
+            direction.y = 0; // Neutralize the y component to keep the bot upright
+
+            // Ensure the direction vector is not zero to avoid errors in LookRotation
+            if (direction.magnitude > 0.1f) // Avoid normalizing a vector that's close to zero
+            {
+                // Create a rotation that looks along the direction vector
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                // Set the bot's rotation to the target rotation immediately
+                transform.rotation = targetRotation;
+            }
         }
     }
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
+        RotateTowardsPlayer();
 
         if (healthBarSlider != null)
         {
@@ -61,18 +83,14 @@ public class EnemyBot : MonoBehaviour
         // When taking damage and still alive, go into active state
         if (currentHealth > 0)
         {
+            enemyRig.weight = 1;
             enemyAnimator.SetTrigger("Firing");
 
             if (!isFiring)
             {
                 StartFiring();
             }
-
-            // Rotate towards the player
-            Vector3 direction = playerTarget.position - transform.position;
-            direction.y = 0; 
-            transform.rotation = Quaternion.LookRotation(direction);
-            enemyRig.weight = 1;
+            
         }
         else
         {
@@ -89,7 +107,7 @@ public class EnemyBot : MonoBehaviour
     public void StartFiring()
     {
         Debug.Log("Enemy Fired a bullet!");
-        
+
         isFiring = true;
 
         foreach (var particle in muzzleFlash)
@@ -103,7 +121,7 @@ public class EnemyBot : MonoBehaviour
     public void StopFiring()
     {
         isFiring = false;
-        
+
     }
 
     private void Die()

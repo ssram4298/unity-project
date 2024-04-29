@@ -42,8 +42,8 @@ public class EventDisplayManager : MonoBehaviour
     {
         // Show the HUD with completion text, without hiding it automatically
         hudEventMissionStart.SetActive(true);
-        missionCompleteText.text = "Mission Complete!";
-        missionNameText.text = missionName;
+        missionCompleteText.text = missionName;
+        missionNameText.text = "Mission Complete!";
 
         Invoke("HideHUD", displayTime);
     }

@@ -20,13 +20,13 @@ public class Mission3Manager : MonoBehaviour
 
     public void IncrementCounter()
     {
+        healthFX[counter].SetActive(true);
         counter++;
         notificationController.SetNotificaitonSlider(enemiesToDefeat, counter);
         notificationController.UpdateSliderText(counter + "/" + enemiesToDefeat);
 
         if (counter >= 3)
         {
-            healthFX[counter].SetActive(true);
             notificationController.DeactivateNotificationArea();
             gameController.CompleteMission();
             gameController.Mission4();

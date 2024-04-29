@@ -12,6 +12,8 @@ public class AdvancedEnemyBot: MonoBehaviour
     public Rig enemyRig;
     public float maxHealth = 100f;
 
+    public Mission5Manager m5Manager;
+
     public Slider healthBarSlider;
 
     public Transform rayCastOrigin;
@@ -47,12 +49,23 @@ public class AdvancedEnemyBot: MonoBehaviour
         if (distanceToPlayer <= activationRange && !isFiring)
         {
             StartFiring();
+
+            RotateTowardsPlayer();
         }
 
         if (isFiring && Time.time > nextFireTime)
         {
             StartFiring();
+
+            RotateTowardsPlayer();
         }
+    }
+
+    private void RotateTowardsPlayer()
+    {
+        Vector3 direction = (playerTarget.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); // Keep the rotation in the y axis only
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 
     public void TakeDamage(float damage)
@@ -78,7 +91,10 @@ public class AdvancedEnemyBot: MonoBehaviour
             enemyRig.weight = 0;
             enemyAnimator.SetTrigger("Death");
 
-            Invoke(nameof(Die), 2.5f);
+            if (currentHealth == 0)
+            {
+                Invoke(nameof(Die), 2.5f);
+            }
         }
     }
 
@@ -112,7 +128,9 @@ public class AdvancedEnemyBot: MonoBehaviour
 
     private void Die()
     {
+        Debug.Log("Enemy Death is being Invoked!");
         gameObject.SetActive(false);
+        m5Manager.IncrementCounter();
     }
 
     private void PerformRaycast()

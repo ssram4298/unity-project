@@ -19,11 +19,11 @@ public class GameController : MonoBehaviour
     private bool isWaitingForInput = true; // Waiting for any input, not just displaying game name
     private bool gameStarted = false; // Flag to ensure the game start logic only runs once
 
-    private string gameName = "Cyberpunk!";
+    private string gameName = "Operation Hunt!";
     private int currentMissionIndex = 0;
 
-    private string[] missionNames = { "Prelude", "Mission 1", "Mission 2", "Mission 3", "Mission 4" };
-    private string[] missionDescriptions = { "The Call.", "Escape the Room.", "The Training Arc.", "The Revenge Begins!", "The Final Battle!!" };
+    private string[] missionNames = { "Prelude", "Mission 1", "Mission 2", "Mission 3", "Mission 4", "Mission 5" };
+    private string[] missionDescriptions = { "The Call.", "Breathless Escape!", "The Training Arc.", "Silent Strike!","Echoes of Espionage!", "The Final Gambit!" };
 
     // Start is called before the first frame update
     void Start()
@@ -57,8 +57,10 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Game Started!");
         //Prelude();// Start the first mission
+        //
         //Mission2();
-        Mission3();
+        //Mission3();
+        Mission5();
     }
 
     public void StartMission()
@@ -136,9 +138,19 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Mission 3 Started!");
 
-        currentMissionIndex = 3; // Remove this after development or dont it doesnt matter
-        StartMission();
+        HudCallEvent.SetActive(true);
+        SoundController.Instance.PlayAudioClip(1);
+        
         checkpointManager.ActivateMission3Checkpoint();
+        
+        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, () =>
+        {
+            HudCallEvent.SetActive(false);
+
+            currentMissionIndex = 3;
+            StartMission();
+        }));
+        
     }
 
     public void Mission4()
@@ -146,13 +158,14 @@ public class GameController : MonoBehaviour
         Debug.Log("Mission 4 Started!");
 
         HudCallEvent.SetActive(true);
-        SoundController.Instance.PlayAudioClip(0);
+        SoundController.Instance.PlayAudioClip(2);
         //wait for audioclip to end and call checkpointmanager.ActivateMission4checkpoint
         StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, () =>
         {
+            HudCallEvent.SetActive(false);
+
             currentMissionIndex = 4; // Remove this after development or dont it doesnt matter
             StartMission();
-            HudCallEvent.SetActive(false);
             checkpointManager.ActivateMission4Checkpoint();
         }));
     }
@@ -160,9 +173,8 @@ public class GameController : MonoBehaviour
     public void Mission5()
     {
         Debug.Log("Mission 5 Started");
-
+        currentMissionIndex = 5;
         checkpointManager.ActivateMission5Checkpoint();
-
     }
 
     // Call this when a mission is completed

@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections.Generic;
 
 public class PlayerHealthController: MonoBehaviour
 {
@@ -12,16 +15,16 @@ public class PlayerHealthController: MonoBehaviour
     public TextMeshProUGUI healthText;
 
     public GameController gameController;
+   
+    //public PostProcessVolume volume;
 
-    public PostProcessVolume volume;
+    public CanvasGroup damageCanvasGroup;
+    public CanvasGroup healCanvasGroup;
 
-    private Vignette vignette;
-
+    //private Vignette vignette;
+    private float fadeDuration = 0.5f;
     private Gradient healthGradient;
     private Coroutine healthCoroutine; // Reference to the ongoing coroutine
-    
-
-
 
     public void Start()
     {
@@ -29,10 +32,8 @@ public class PlayerHealthController: MonoBehaviour
         InitializeHealthGradient();
         UpdateHealthUI();
 
-        if (volume.profile.TryGetSettings(out Vignette vignette))
-        {
-            this.vignette = vignette;
-        }
+        damageCanvasGroup.alpha = 0;
+        healCanvasGroup.alpha = 0;
     }
 
     public void StartDecreasing()
@@ -68,13 +69,17 @@ public class PlayerHealthController: MonoBehaviour
         currentHealth -= damage;
         UpdateHealthUI();
 
-        StartCoroutine(ShowDamageEffect());
-
+        if(damage >= 2)
+        {
+            SendHapticFeedback();
+            StartCoroutine(ShowDamageEffect());
+        }
+        
         if (currentHealth <= 0)
         {
             Debug.Log("PLayer Health Reached zero");
             gameController.playerHealthZero();
-            Invoke("QuitGame", 6f);
+            Invoke("LoadStartScene", 3.5f);
             //QuitGame();
         }
     }
@@ -113,10 +118,16 @@ public class PlayerHealthController: MonoBehaviour
         Application.Quit();
 #endif
     }
+    void LoadStartScene()
+    {
+        SceneManager.LoadScene("start"); // This will load the scene named "Start"
+    }
 
     public void RestoreHealth()
     {
-        if(currentHealth <= 70)
+        StartCoroutine(ShowHealEffect());
+        
+        if (currentHealth <= 70)
         {
             currentHealth += 30;
         }
@@ -129,12 +140,61 @@ public class PlayerHealthController: MonoBehaviour
 
     IEnumerator ShowDamageEffect()
     {
-        // Increase the vignette intensity
-        vignette.intensity.value = 0.5f;  // Adjust the value as needed for visibility
-        vignette.color.value = Color.red;  // Set the vignette color to red
-        yield return new WaitForSeconds(0.5f);  // Duration of the effect
+        while (damageCanvasGroup.alpha < 1)
+        {
+            damageCanvasGroup.alpha += Time.deltaTime / fadeDuration;
+            yield return null;
+        }
 
-        // Reset the vignette intensity
-        vignette.intensity.value = 0f;
+        yield return new WaitForSeconds(0.5f); // Duration of the effect visible fully
+
+        // Fade out
+        while (damageCanvasGroup.alpha > 0)
+        {
+            damageCanvasGroup.alpha -= Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+    }
+
+    IEnumerator ShowHealEffect()
+    {
+        while (healCanvasGroup.alpha < 1)
+        {
+            healCanvasGroup.alpha += Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.5f); // Duration of the effect visible fully
+
+        // Fade out
+        while (healCanvasGroup.alpha > 0)
+        {
+            healCanvasGroup.alpha -= Time.deltaTime / fadeDuration;
+            yield return null;
+        }
+    }
+
+    private void SendHapticFeedback()
+    {
+        // You'll need references to the input devices, typically the controllers
+        var devices = new List<InputDevice>();
+        InputDevices.GetDevices(devices);
+
+        foreach (var device in devices)
+        {
+            if (device.isValid)
+            {
+                // Send a haptic impulse with a given amplitude and duration
+                // Adjust amplitude (0.0 to 1.0) and duration as necessary
+                HapticCapabilities capabilities;
+                if (device.TryGetHapticCapabilities(out capabilities) && capabilities.supportsImpulse)
+                {
+                    uint channel = 0; // The channel of the haptic motor. Most devices should use 0.
+                    float amplitude = 0.5f; // Strength of the vibration
+                    float duration = 0.1f; // Duration of the vibration
+                    device.SendHapticImpulse(channel, amplitude, duration);
+                }
+            }
+        }
     }
 }

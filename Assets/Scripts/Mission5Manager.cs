@@ -15,7 +15,7 @@ public class Mission5Manager : MonoBehaviour
     public GameObject[] healthFX;
 
     private int counter = 0;
-    private int enemiesToDefeat = 6;
+    private int enemiesToDefeat = 5;
 
     public void StartMission5()
     {
@@ -27,12 +27,13 @@ public class Mission5Manager : MonoBehaviour
 
     public void IncrementCounter()
     {
-        counter++;
         healthFX[counter].SetActive(true);
+        counter++;
+        
         notificationController.SetNotificaitonSlider(enemiesToDefeat, counter);
         notificationController.UpdateSliderText(counter + "/" + enemiesToDefeat);
 
-        if (counter >= 6)
+        if (counter >= enemiesToDefeat)
         {
             BossBattle();
         }
@@ -44,8 +45,8 @@ public class Mission5Manager : MonoBehaviour
         BlastFX.SetActive(true);
         StartCoroutine(ShowBossAfterDelay(2.0f)); // Wait for 2 seconds before showing boss
 
+        healthFX[counter].SetActive(true);
         healthFX[counter + 1].SetActive(true);
-        healthFX[counter + 2].SetActive(true);
     }
 
     IEnumerator ShowBossAfterDelay(float delay)
@@ -62,7 +63,8 @@ public class Mission5Manager : MonoBehaviour
         // Example: Enable boss abilities, change music, etc.
         Debug.Log("Boss combat starts now!");
         // You might also want to update the notification area with new instructions
-        notificationController.ActivateNotificationArea("Defeat the Boss!");
+        notificationController.UpdateSliderText("Defeat the Boss!") ;
+        notificationController.ActivateNotificationArea("Hide Behind Objects to Avoid Attacks!");
     }
 
     public void EndBossBattle()
