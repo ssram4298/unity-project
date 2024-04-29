@@ -29,13 +29,10 @@ public class NpcInteraction : MonoBehaviour
 
     void Update()
     {
-        if (!hasInteracted)
+        CheckPlayerDistance();
+        if (isPlayerInRange)
         {
-            CheckPlayerDistance();
-            if (isPlayerInRange)
-            {
-                RotateTowardsPlayer();
-            }
+            RotateTowardsPlayer();
         }
     }
 
