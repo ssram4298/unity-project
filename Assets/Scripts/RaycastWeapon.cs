@@ -106,7 +106,7 @@ public class RaycastWeaponController : XRGrabInteractable
             var enemyHealth = hitInfo.collider.GetComponent<EnemyBot>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(5);
+                enemyHealth.TakeDamage(20);
             }
         }
         else if (hitInfo.collider.CompareTag("AdvancedBot"))
@@ -118,7 +118,7 @@ public class RaycastWeaponController : XRGrabInteractable
             var enemyHealth = hitInfo.collider.GetComponent<AdvancedEnemyBot>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(5);
+                enemyHealth.TakeDamage(20);
             }
         }
         else if (hitInfo.collider.CompareTag("Boss"))
@@ -132,7 +132,7 @@ public class RaycastWeaponController : XRGrabInteractable
             var enemyHealth = hitInfo.collider.GetComponent<BossController>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(100);
+                enemyHealth.TakeDamage(25);
             }
         }
         else if (hitInfo.collider.CompareTag("Enemy"))
@@ -143,7 +143,7 @@ public class RaycastWeaponController : XRGrabInteractable
             var enemyHealth = hitInfo.collider.GetComponent<BotHealth>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(5);
+                enemyHealth.TakeDamage(10);
             }
         }
         else if (hitInfo.collider.CompareTag("Hologram"))
