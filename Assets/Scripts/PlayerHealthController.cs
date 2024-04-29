@@ -15,6 +15,7 @@ public class PlayerHealthController: MonoBehaviour
     public TextMeshProUGUI healthText;
 
     public GameController gameController;
+    public SoundController soundController;
    
     //public PostProcessVolume volume;
 
@@ -71,6 +72,7 @@ public class PlayerHealthController: MonoBehaviour
 
         if(damage >= 2)
         {
+            soundController.PlayAudioClip(5); // play damage audio clip
             SendHapticFeedback();
             StartCoroutine(ShowDamageEffect());
         }
@@ -125,6 +127,8 @@ public class PlayerHealthController: MonoBehaviour
 
     public void RestoreHealth()
     {
+        soundController.PlayAudioClip(6); // Play healing sound
+
         StartCoroutine(ShowHealEffect());
         
         if (currentHealth <= 70)

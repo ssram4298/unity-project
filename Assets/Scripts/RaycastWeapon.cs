@@ -13,6 +13,8 @@ public class RaycastWeaponController : XRGrabInteractable
     public ParticleSystem hologramHitEffect;
     public TrailRenderer tracerEffect;
 
+    public AudioSource bulletSoundSource;
+
     [Header("Raycast Settings")]
     public Transform rayCastOrigin;
     public float range = 100f;
@@ -62,6 +64,7 @@ public class RaycastWeaponController : XRGrabInteractable
         if (!isFiring)
         {
             isFiring = true;
+            bulletSoundSource.Play();
             foreach (var particle in muzzleFlash)
             {
                 particle.Emit(1);

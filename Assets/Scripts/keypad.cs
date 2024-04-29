@@ -10,15 +10,24 @@ public class Keypad : MonoBehaviour
     [SerializeField] private PlayerHealthController playerHealth;
     [SerializeField] private SmokeController smokeController;
     [SerializeField] private GameObject healthFX;
+    [SerializeField] private AudioSource audioSource;  // Audio source component for playing sounds
 
     private readonly string Answer = "458";
     private bool isDoorOpened = false;
+
+    private void Start()
+    {
+        // Ensure AudioSource is attached to this GameObject or manually assign it in the inspector
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+    }
 
     public void Number(int number)
     {
         if (!isDoorOpened)
         {
             Ans.text += number.ToString();
+            audioSource.Play();
         }
     }
 

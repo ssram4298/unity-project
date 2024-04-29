@@ -5,37 +5,44 @@ using UnityEngine;
 public class SmokeController : MonoBehaviour
 {
     public ParticleSystem[] smokeSystems; // Array to hold all your smoke particle systems
+    public AudioSource[] smokeAudio; // Array to hold audio sources corresponding to smoke particle systems
 
     // Method to start all smoke effects
     public void StartAllSmoke()
     {
-        foreach (var smoke in smokeSystems)
+        for (int i = 0; i < smokeSystems.Length; i++)
         {
-            if (smoke != null && !smoke.isPlaying)
+            if (smokeSystems[i] != null && !smokeSystems[i].isPlaying)
             {
-                smoke.Play();
+                smokeSystems[i].Play();
+                if (smokeAudio[i] != null) // Ensure there is an AudioSource to play
+                    smokeAudio[i].Play();
             }
         }
     }
 
-    // Method to stop all smoke effects (if needed)
+    // Method to stop all smoke effects
     public void StopAllSmoke()
     {
-        foreach (var smoke in smokeSystems)
+        for (int i = 0; i < smokeSystems.Length; i++)
         {
-            if (smoke != null && smoke.isPlaying)
+            if (smokeSystems[i] != null && smokeSystems[i].isPlaying)
             {
-                smoke.Stop();
+                smokeSystems[i].Stop();
+                if (smokeAudio[i] != null) // Ensure there is an AudioSource to stop
+                    smokeAudio[i].Stop();
             }
         }
     }
+
+    // Method to clear all smoke effects (removes particles instantly)
     public void ClearAllSmoke()
     {
-        foreach (var smoke in smokeSystems)
+        for (int i = 0; i < smokeSystems.Length; i++)
         {
-            if (smoke != null && smoke.isPlaying)
+            if (smokeSystems[i] != null && smokeSystems[i].isPlaying)
             {
-                smoke.Clear();
+                smokeSystems[i].Clear();
             }
         }
     }

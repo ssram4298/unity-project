@@ -56,11 +56,11 @@ public class GameController : MonoBehaviour
     private void StartGame()
     {
         Debug.Log("Game Started!");
-        //Prelude();// Start the first mission
+        Prelude();// Start the first mission
         //
         //Mission2();
         //Mission3();
-        Mission5();
+        //Mission5();
     }
 
     public void StartMission()
@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour
         {
             string missionName = missionNames[currentMissionIndex];
             string missionDescription = missionDescriptions[currentMissionIndex];
+            SoundController.Instance.PlayAudioClip(0);
             eventDisplayManager.DisplayStartMission(missionName, missionDescription);
             currentMissionIndex++; // Increment the mission index
             
@@ -102,7 +103,7 @@ public class GameController : MonoBehaviour
             }));
             StartCoroutine(Wait(audioSource.clip.length, Mission1));
         }*/
-        SoundController.Instance.PlayAudioClip(0);
+        SoundController.Instance.PlayAudioClip(2);
         StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, Mission1));
     }
     
@@ -139,7 +140,7 @@ public class GameController : MonoBehaviour
         Debug.Log("Mission 3 Started!");
 
         HudCallEvent.SetActive(true);
-        SoundController.Instance.PlayAudioClip(1);
+        SoundController.Instance.PlayAudioClip(3);
         
         checkpointManager.ActivateMission3Checkpoint();
         
@@ -158,7 +159,7 @@ public class GameController : MonoBehaviour
         Debug.Log("Mission 4 Started!");
 
         HudCallEvent.SetActive(true);
-        SoundController.Instance.PlayAudioClip(2);
+        SoundController.Instance.PlayAudioClip(4);
         //wait for audioclip to end and call checkpointmanager.ActivateMission4checkpoint
         StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, () =>
         {
@@ -180,6 +181,7 @@ public class GameController : MonoBehaviour
     // Call this when a mission is completed
     public void CompleteMission()
     {
+        SoundController.Instance.PlayAudioClip(1);
         Debug.Log("Complete Mission Called for Mission " + (currentMissionIndex-1));
         eventDisplayManager.DisplayEndMission(missionDescriptions[currentMissionIndex-1]); // Make sure this function exists in your EventDisplayManager
         
@@ -187,7 +189,6 @@ public class GameController : MonoBehaviour
     }
     public void playerHealthZero()
     {
-        Debug.Log("PLayer Gc");
         eventDisplayManager.playerDied();
     }
 }
