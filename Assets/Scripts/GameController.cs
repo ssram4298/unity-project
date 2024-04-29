@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour
         {
             string missionName = missionNames[currentMissionIndex];
             string missionDescription = missionDescriptions[currentMissionIndex];
-            SoundController.Instance.PlayAudioClip(0);
+            SoundController.Instance.PlayAudioClip(0, false);
             eventDisplayManager.DisplayStartMission(missionName, missionDescription);
             currentMissionIndex++; // Increment the mission index
             
@@ -103,8 +103,8 @@ public class GameController : MonoBehaviour
             }));
             StartCoroutine(Wait(audioSource.clip.length, Mission1));
         }*/
-        SoundController.Instance.PlayAudioClip(2);
-        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, Mission1));
+        SoundController.Instance.PlayAudioClip(2, true);
+        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.primaryAudioSource, Mission1));
     }
     
     IEnumerator WaitForAudioClipEnd(AudioSource source, Action callback)
@@ -140,11 +140,11 @@ public class GameController : MonoBehaviour
         Debug.Log("Mission 3 Started!");
 
         HudCallEvent.SetActive(true);
-        SoundController.Instance.PlayAudioClip(3);
+        SoundController.Instance.PlayAudioClip(3, true);
         
         checkpointManager.ActivateMission3Checkpoint();
         
-        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, () =>
+        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.primaryAudioSource, () =>
         {
             HudCallEvent.SetActive(false);
 
@@ -159,9 +159,9 @@ public class GameController : MonoBehaviour
         Debug.Log("Mission 4 Started!");
 
         HudCallEvent.SetActive(true);
-        SoundController.Instance.PlayAudioClip(4);
+        SoundController.Instance.PlayAudioClip(4, true);
         //wait for audioclip to end and call checkpointmanager.ActivateMission4checkpoint
-        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.audioSource, () =>
+        StartCoroutine(WaitForAudioClipEnd(SoundController.Instance.primaryAudioSource, () =>
         {
             HudCallEvent.SetActive(false);
 
@@ -181,7 +181,7 @@ public class GameController : MonoBehaviour
     // Call this when a mission is completed
     public void CompleteMission()
     {
-        SoundController.Instance.PlayAudioClip(1);
+        SoundController.Instance.PlayAudioClip(1, false);
         Debug.Log("Complete Mission Called for Mission " + (currentMissionIndex-1));
         eventDisplayManager.DisplayEndMission(missionDescriptions[currentMissionIndex-1]); // Make sure this function exists in your EventDisplayManager
         

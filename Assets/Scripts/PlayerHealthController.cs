@@ -72,7 +72,7 @@ public class PlayerHealthController: MonoBehaviour
 
         if(damage >= 2)
         {
-            soundController.PlayAudioClip(5); // play damage audio clip
+            soundController.PlayAudioClip(5, false); // play damage audio clip
             SendHapticFeedback();
             StartCoroutine(ShowDamageEffect());
         }
@@ -127,7 +127,7 @@ public class PlayerHealthController: MonoBehaviour
 
     public void RestoreHealth()
     {
-        soundController.PlayAudioClip(6); // Play healing sound
+        soundController.PlayAudioClip(6, false); // Play healing sound
 
         StartCoroutine(ShowHealEffect());
         

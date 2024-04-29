@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class Mission5Manager : MonoBehaviour
 {
     public GameController gameController;
@@ -74,6 +74,12 @@ public class Mission5Manager : MonoBehaviour
         // Post-battle effects or transitions can be handled here
         notificationController.ActivateNotificationArea("Boss defeated! Mission Complete.");
         gameController.CompleteMission(); // Assuming there's a method to complete the mission
+        StartCoroutine(LoadNextSceneAfterDelay(10));
+    }
+    IEnumerator LoadNextSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("start"); // Replace "NameOfYourNextScene" with the actual scene name
     }
 
 }

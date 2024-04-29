@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class SoundController : MonoBehaviour
 {
-    public AudioSource audioSource;  // Assign this in the Unity inspector
+    public AudioSource primaryAudioSource;  // For important sounds, assign in Unity inspector
+    public AudioSource secondaryAudioSource;  // For less important sounds, assign in Unity inspector
     public AudioClip[] audioClips;   // Assign audio clips for each mission in the Unity inspector
 
     public static SoundController Instance;
@@ -13,7 +14,7 @@ public class SoundController : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  // Optional: Make this persist across scenes
+            DontDestroyOnLoad(gameObject);  // Make this persist across scenes
         }
         else
         {
@@ -21,12 +22,13 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    public void PlayAudioClip(int clipIndex)
+    public void PlayAudioClip(int clipIndex, bool isImportant = false)
     {
+        AudioSource targetSource = isImportant ? primaryAudioSource : secondaryAudioSource;
         if (clipIndex < audioClips.Length && audioClips[clipIndex] != null)
         {
-            audioSource.clip = audioClips[clipIndex];
-            audioSource.Play();
+            targetSource.clip = audioClips[clipIndex];
+            targetSource.Play();
         }
         else
         {

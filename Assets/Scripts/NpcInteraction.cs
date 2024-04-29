@@ -41,9 +41,11 @@ public class NpcInteraction : MonoBehaviour
 
     private void RotateTowardsPlayer()
     {
-        Vector3 direction = (player.transform.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); // Keep the rotation in the y axis only
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        Debug.Log("Rotating towards player!");
+        Vector3 lookPosition = player.transform.position;
+        lookPosition.y = transform.position.y; // This ensures the NPC only rotates around the y-axis
+
+        transform.LookAt(lookPosition);
     }
 
     private void CheckPlayerDistance()
@@ -58,7 +60,6 @@ public class NpcInteraction : MonoBehaviour
 
             if (Input.GetButtonDown("Fire1") && isPlayerInRange)
             {
-                Debug.Log("Player Interacted");
                 npcAnimator.SetTrigger("Interacted");
                 audioSource.Play();  // Play audio after the animation has finished
                 hasInteracted = true;  // Set flag to prevent further interactions
@@ -93,7 +94,6 @@ public class NpcInteraction : MonoBehaviour
 
     private void CompleteMissionFunction()
     {
-        Debug.Log("Mission completed!");
         gameController.CompleteMission();
         gameController.Mission5();
     }

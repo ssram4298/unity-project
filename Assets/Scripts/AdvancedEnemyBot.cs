@@ -8,6 +8,8 @@ public class AdvancedEnemyBot: MonoBehaviour
     public ParticleSystem[] muzzleFlash;
     public TrailRenderer tracerEffect;
 
+    public AudioSource audioSource;
+
     public Animator enemyAnimator;
     public Rig enemyRig;
     public float maxHealth = 100f;
@@ -88,6 +90,7 @@ public class AdvancedEnemyBot: MonoBehaviour
         else
         {
             StopFiring();
+            audioSource.Play();
             enemyRig.weight = 0;
             enemyAnimator.SetTrigger("Death");
 

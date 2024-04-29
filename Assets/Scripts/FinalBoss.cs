@@ -14,6 +14,8 @@ public class BossController : MonoBehaviour
     public Transform bigAttackRayCastOrigin;
     public Transform playerTarget;
 
+    public AudioSource audioSource;
+
     public Rig bossRig;
 
     public Transform player; // Assign player's Transform in the Inspector
@@ -131,6 +133,7 @@ public class BossController : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
+            audioSource.Stop();
             yield break; // Exit the coroutine if the boss is already dead
         }
 
@@ -140,16 +143,21 @@ public class BossController : MonoBehaviour
         // Check health again after charge-up in case the boss died during this time
         if (currentHealth <= 0)
         {
+            audioSource.Stop();
+
             bigAttackFX.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             yield break; // Exit the coroutine if the boss is dead
         }
 
+        audioSource.Play();
         BossAnimator.Play("Attack");
         yield return new WaitForSeconds(2); // Wait for the attack animation to play
 
         // Final health check before performing the attack
         if (currentHealth <= 0)
         {
+            audioSource.Stop();
+
             yield break; // Exit the coroutine if the boss is dead
         }
 

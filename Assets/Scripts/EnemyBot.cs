@@ -7,6 +7,8 @@ public class EnemyBot : MonoBehaviour
 {
     public Mission3Manager m3Manager;
 
+    public AudioSource audioSource;
+
     public ParticleSystem[] muzzleFlash;
     public TrailRenderer tracerEffect;
 
@@ -96,6 +98,7 @@ public class EnemyBot : MonoBehaviour
         {
             StopFiring();
             enemyRig.weight = 0;
+            audioSource.Play();
             enemyAnimator.SetTrigger("Death");
             if (currentHealth == 0)
             {
