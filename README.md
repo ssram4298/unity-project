@@ -10,6 +10,12 @@ This is a VR game where the player has been kidnapped by an organization called 
 - **Agent Assistance:** Find and collaborate with a secret agent to track down the boss.
 - **Quality of Life Improvements:** Enhanced targeting functionality and other gameplay improvements.
 
+## Demo Video
+
+[![VR Escape Game Demo](https://img.youtube.com/vi/L0x4PomxMto/0.jpg)](https://youtu.be/L0x4PomxMto)
+
+Click on the image above to watch the demo video.
+
 ## Getting Started
 
 ### Prerequisites
